@@ -8,4 +8,4 @@ School project about a controlable robot used to sort different shapes.
   
   
   
-  Feel free to use the code and use for your pojects.
+  Feel free to use the code in your pojects.
