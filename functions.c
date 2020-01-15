@@ -8,8 +8,8 @@ SDL_Window * createWindow(){
         "Robot Game!!",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        700,
-        480,
+        900,
+        500,
         SDL_WINDOW_RESIZABLE
     );
 
@@ -60,7 +60,7 @@ SDL_Texture * createTexture(SDL_Window * window, SDL_Renderer * rend, SDL_Surfac
 }
 
 
-int handleEvents(SDL_Window * window, int *w, int *h, int *up, int *right, int *down, int *left){
+int handleEvents(SDL_Window * window, int *w, int *h, int *up, int *right, int *down, int *left, SDL_Rect *pos, SDL_Rect shapes[], int rands[], int* shapeNbr, int tab[]){
     SDL_Event e;
     if(SDL_PollEvent(&e)){
         if(e.type == SDL_QUIT){
@@ -89,6 +89,10 @@ int handleEvents(SDL_Window * window, int *w, int *h, int *up, int *right, int *
             case SDL_SCANCODE_D:
             case SDL_SCANCODE_RIGHT:
                 *right = 1;
+                break;
+            case SDL_SCANCODE_SPACE:
+                checkCircle(pos, shapes, rands, shapeNbr);
+                putCircle(pos, shapes, rands, shapeNbr, tab);
                 break;
             }
         }
@@ -154,4 +158,36 @@ void updateRobotPosition(SDL_Rect *pos, int x_vel, int y_vel, int w, int h){
     if(pos->x<0) pos->x=0;
     if(pos->y<0) pos->y=0;
     if(pos->y>h-100) pos->y=h-100;
+
+    if((pos->x<=700 && pos->x>0 && pos->y<=100)||
+        (pos->x<=700 && pos->x>0 && pos->y>=300)){
+            pos->x-=x_vel;
+            pos->y-=y_vel;
+    }
 }
+
+void checkCircle(SDL_Rect *pos, SDL_Rect shapes[], int rands[], int* shapeNbr){
+    int m = pos->x + 50;
+    if(*shapeNbr==-1){
+        if(pos->y>=100 && pos->y<130 && m>100 && m<=700){
+            if(rands[m/100-1]==0) *shapeNbr =  m/100-1;
+        }else{
+            *shapeNbr = -1;
+        }
+    }
+}
+
+void putCircle(SDL_Rect *pos, SDL_Rect shapes[],int rands[], int* shapeNbr, int tab[]){
+    int m = pos->x + 50;
+    if(*shapeNbr!=-1){
+        if(pos->y>=270 && pos->y<=300 && m>100 && m<=700 && tab[(m/100)-1]==0){
+            
+            rands[*shapeNbr]=-1; 
+            shapes[*shapeNbr].x= (m/100)*100;
+            shapes[*shapeNbr].y= 400;
+            *shapeNbr =  -1;
+            tab[(m/100)-1] = 1;
+        }
+    }
+}
+
