@@ -10,7 +10,7 @@ SDL_Window * createWindow(){
         SDL_WINDOWPOS_CENTERED,
         900,
         500,
-        SDL_WINDOW_RESIZABLE
+        0
     );
 
     if(window == NULL){
@@ -60,7 +60,7 @@ SDL_Texture * createTexture(SDL_Window * window, SDL_Renderer * rend, SDL_Surfac
 }
 
 
-int handleEvents(SDL_Window * window, int *w, int *h, int *up, int *right, int *down, int *left, SDL_Rect *pos, SDL_Rect shapes[], int rands[], int* shapeNbr, int tab[]){
+int handleEvents(SDL_Window * window, int *w, int *h, int *up, int *right, int *down, int *left, SDL_Rect *pos, SDL_Rect shapes[], int rands[], int* shapeNbr, int tab[], int * menu, int shapes_zone2[]){
     SDL_Event e;
     if(SDL_PollEvent(&e)){
         if(e.type == SDL_QUIT){
@@ -74,6 +74,24 @@ int handleEvents(SDL_Window * window, int *w, int *h, int *up, int *right, int *
         if(e.type == SDL_KEYDOWN){
             switch (e.key.keysym.scancode)
             {
+            case SDL_SCANCODE_1:
+                if(*menu==0 || *menu==1){
+                    clearGame(pos, shapes, rands, shapeNbr, *w, *h,shapes_zone2);
+                    *menu = 3;
+                }
+                break;
+            case SDL_SCANCODE_R:
+                if(*menu==1) *menu = 3;
+                break;
+            case SDL_SCANCODE_2:
+                if(*menu==0 || *menu==1) *menu = 2;
+                break;
+            case SDL_SCANCODE_3:
+                if(*menu==0 || *menu==1) return 1;
+                break;
+            case SDL_SCANCODE_ESCAPE:
+                if(*menu!=0) *menu = 1;
+                break;
             case SDL_SCANCODE_W:
             case SDL_SCANCODE_UP:
                 *up = 1;
@@ -91,8 +109,10 @@ int handleEvents(SDL_Window * window, int *w, int *h, int *up, int *right, int *
                 *right = 1;
                 break;
             case SDL_SCANCODE_SPACE:
-                checkCircle(pos, shapes, rands, shapeNbr);
-                putCircle(pos, shapes, rands, shapeNbr, tab);
+                if(*menu==3){
+                    checkCircle(pos, shapes, rands, shapeNbr);
+                    putCircle(pos, shapes, rands, shapeNbr, tab);
+                }
                 break;
             }
         }
@@ -189,5 +209,31 @@ void putCircle(SDL_Rect *pos, SDL_Rect shapes[],int rands[], int* shapeNbr, int 
             tab[(m/100)-1] = 1;
         }
     }
+}
+
+void clearGame(SDL_Rect *pos, SDL_Rect shapes[],int rands[], int* shapeNbr, int w, int h, int shapes_zone2[]){
+    pos->x = w -150;
+    pos->y = h/2 -50;
+    pos->w = 100;
+    pos->h = 100;
+    for(int i = 1; i<=6; i++){
+        shapes[i-1].x = i*100;
+        shapes[i-1].y = 0;
+        shapes[i-1].w = 100;
+        shapes[i-1].h = 100;
+    }
+
+    int k;
+    for (int i = 0; i<6; i++){
+        k = rand()%3;
+        rands[i] = k;
+    }
+
+    *shapeNbr = -1;
+
+    for(int i = 0; i<=5; i++){
+        shapes_zone2[i] = 0;
+    }
+
 }
 

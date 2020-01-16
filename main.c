@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 
 
 
-    SDL_Surface* shape = IMG_Load("shape.png");
+    SDL_Surface* shape = IMG_Load("triangle.png");
     if(!shape){
         printf("Error  Surface!!\n");
         SDL_DestroyRenderer(rend);
@@ -109,9 +109,45 @@ int main(int argc, char *argv[])
         shapes[i-1].h = 100;
     }
 
+    //******************* Menus *********************//
 
+    SDL_Surface* menu0 = IMG_Load("menu0.png");
+    if(!menu0){
+        printf("Error  Surface!!\n");
+        SDL_DestroyRenderer(rend);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
 
+    SDL_Texture * texMenu0 = SDL_CreateTextureFromSurface(rend, menu0);
+    SDL_FreeSurface(menu0);
+    if(!texMenu0){
+        printf("Error  Texture!!\n");
+        SDL_DestroyRenderer(rend);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    } 
 
+    SDL_Surface* menu1 = IMG_Load("menu1.png");
+    if(!menu1){
+        printf("Error  Surface!!\n");
+        SDL_DestroyRenderer(rend);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
+
+    SDL_Texture * texMenu1 = SDL_CreateTextureFromSurface(rend, menu1);
+    SDL_FreeSurface(menu1);
+    if(!texMenu1){
+        printf("Error  Texture!!\n");
+        SDL_DestroyRenderer(rend);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    } 
 
     
     int w, h;
@@ -122,6 +158,13 @@ int main(int argc, char *argv[])
     pos.y = h/2 -50;
     pos.w = 100;
     pos.h = 100;
+
+
+    SDL_Rect allWindow;
+    allWindow.x = 0;
+    allWindow.y = 0;
+    allWindow.w = w;
+    allWindow.h = h;
 
     // Set the speed
     int speed = 3;
@@ -149,65 +192,106 @@ int main(int argc, char *argv[])
     int shapeNbr = -1;
     int shapes_zone2[6]={0,0,0,0,0,0};
 
+    int menu = 0;
+
     while(1){
-        int ev = handleEvents(window, &w, &h, &up, &right, &down, &left, &pos, shapes, rands, &shapeNbr, shapes_zone2);
-        if(ev==1) break;
+        if(menu==0){
+            // First menu
+            int ev = handleEvents(window, &w, &h, &up, &right, &down, &left, &pos, shapes, rands, &shapeNbr, shapes_zone2, &menu, shapes_zone2);
+            if(ev==1) break;
+
+            SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+            SDL_RenderClear(rend);
+            SDL_RenderCopyEx(rend, texMenu0  , NULL, &allWindow, 0, NULL, SDL_FLIP_NONE);
+            SDL_RenderPresent(rend);
+
+            
+            SDL_Delay(delTime);
+
+        }else if(menu==1){
+            int ev = handleEvents(window, &w, &h, &up, &right, &down, &left, &pos, shapes, rands, &shapeNbr, shapes_zone2, &menu, shapes_zone2);
+            if(ev==1) break;
+
+            SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+            SDL_RenderClear(rend);
+            SDL_RenderCopyEx(rend, texMenu1  , NULL, &allWindow, 0, NULL, SDL_FLIP_NONE);
+            SDL_RenderPresent(rend);
+
+            
+            SDL_Delay(delTime);
+
+        }else if(menu==2){
+            int ev = handleEvents(window, &w, &h, &up, &right, &down, &left, &pos, shapes, rands, &shapeNbr, shapes_zone2, &menu, shapes_zone2);
+            
+            SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+            SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+            SDL_RenderClear(rend);
+            SDL_RenderCopyEx(rend, texMenu0  , NULL, &allWindow, 0, NULL, SDL_FLIP_NONE);
+            SDL_RenderPresent(rend);
+
+            
+            SDL_Delay(delTime);
+
+        }else{
+            int ev = handleEvents(window, &w, &h, &up, &right, &down, &left, &pos, shapes, rands, &shapeNbr, shapes_zone2, &menu, shapes_zone2);
+            if(ev==1) break;
 
 
-        // determine velocity
-        int x_vel = 0;
-        int y_vel = 0;
-        controlRobot(up, down, right, left, speed, &x_vel, &y_vel);
+            // determine velocity
+            int x_vel = 0;
+            int y_vel = 0;
+            controlRobot(up, down, right, left, speed, &x_vel, &y_vel);
 
 
-        SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
-        SDL_RenderClear(rend);
+            SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
+            SDL_RenderClear(rend);
 
-        rotationRobot(up, down, right, left, &rot);
+            rotationRobot(up, down, right, left, &rot);
 
-        for(int i = 0; i<6; i++){
-            switch (rands[i])
-            {
-            case 0:
-                SDL_RenderCopyEx(rend, texCircle  , NULL, &shapes[i], 0, NULL, SDL_FLIP_NONE);
-                break; 
-            case 1:
-                SDL_RenderCopyEx(rend, texRect, NULL, &shapes[i], 0, NULL, SDL_FLIP_NONE);
-                break; 
-            case 2:
-                SDL_RenderCopyEx(rend, texShape, NULL, &shapes[i], 0, NULL, SDL_FLIP_NONE);
-                break;  
-            case -1:
-                SDL_RenderCopyEx(rend, texCircle  , NULL, &shapes[i], 0, NULL, SDL_FLIP_NONE);
-                break;
+            for(int i = 0; i<6; i++){
+                switch (rands[i])
+                {
+                case 0:
+                    SDL_RenderCopyEx(rend, texCircle  , NULL, &shapes[i], 0, NULL, SDL_FLIP_NONE);
+                    break; 
+                case 1:
+                    SDL_RenderCopyEx(rend, texRect, NULL, &shapes[i], 0, NULL, SDL_FLIP_NONE);
+                    break; 
+                case 2:
+                    SDL_RenderCopyEx(rend, texShape, NULL, &shapes[i], 0, NULL, SDL_FLIP_NONE);
+                    break;  
+                case -1:
+                    SDL_RenderCopyEx(rend, texCircle  , NULL, &shapes[i], 0, NULL, SDL_FLIP_NONE);
+                    break;
 
 
+                }
             }
+
+
+
+            SDL_SetRenderDrawColor(rend, 200, 200, 200, SDL_ALPHA_OPAQUE);
+            SDL_RenderDrawLine(rend, 100, 0, 100, 100);
+            SDL_RenderDrawLine(rend, 100, 100, 700, 100);
+            SDL_RenderDrawLine(rend, 700, 0, 700, 100);
+            SDL_RenderDrawLine(rend, 100, 500, 100, 400);
+            SDL_RenderDrawLine(rend, 100, 400, 700, 400);
+            SDL_RenderDrawLine(rend, 700, 400, 700, 500);
+
+
+            SDL_SetTextureColorMod( rend, 255, 255, 255 );
+            SDL_RenderCopyEx(rend, tex, NULL, &pos, rot, NULL, SDL_FLIP_NONE);
+            SDL_RenderPresent(rend);
+
+
+            updateRobotPosition(&pos, x_vel, y_vel, w, h);
+            if(shapeNbr!=-1){
+                shapes[shapeNbr].x = pos.x;
+                shapes[shapeNbr].y = pos.y;
+            }
+
+            SDL_Delay(delTime);
         }
-
-
-
-        SDL_SetRenderDrawColor(rend, 200, 200, 200, SDL_ALPHA_OPAQUE);
-        SDL_RenderDrawLine(rend, 100, 0, 100, 100);
-        SDL_RenderDrawLine(rend, 100, 100, 700, 100);
-        SDL_RenderDrawLine(rend, 700, 0, 700, 100);
-        SDL_RenderDrawLine(rend, 100, 500, 100, 400);
-        SDL_RenderDrawLine(rend, 100, 400, 700, 400);
-        SDL_RenderDrawLine(rend, 700, 400, 700, 500);
-
-        
-        SDL_SetTextureColorMod( rend, 255, 255, 255 );
-        SDL_RenderCopyEx(rend, tex, NULL, &pos, rot, NULL, SDL_FLIP_NONE);
-        SDL_RenderPresent(rend);
-
-
-        updateRobotPosition(&pos, x_vel, y_vel, w, h);
-        if(shapeNbr!=-1){
-            shapes[shapeNbr].x = pos.x;
-            shapes[shapeNbr].y = pos.y;
-        }
-
-        SDL_Delay(delTime);
     }
 
     SDL_DestroyTexture(tex);
