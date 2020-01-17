@@ -74,24 +74,6 @@ int handleEvents(SDL_Window * window, int *w, int *h, int *up, int *right, int *
         if(e.type == SDL_KEYDOWN){
             switch (e.key.keysym.scancode)
             {
-            case SDL_SCANCODE_1:
-                if(*menu==0 || *menu==1){
-                    clearGame(pos, shapes, rands, shapeNbr, *w, *h,shapes_zone2);
-                    *menu = 3;
-                }
-                break;
-            case SDL_SCANCODE_R:
-                if(*menu==1) *menu = 3;
-                break;
-            case SDL_SCANCODE_2:
-                if(*menu==0 || *menu==1) *menu = 2;
-                break;
-            case SDL_SCANCODE_3:
-                if(*menu==0 || *menu==1) return 1;
-                break;
-            case SDL_SCANCODE_ESCAPE:
-                if(*menu!=0) *menu = 1;
-                break;
             case SDL_SCANCODE_W:
             case SDL_SCANCODE_UP:
                 *up = 1;
@@ -109,10 +91,8 @@ int handleEvents(SDL_Window * window, int *w, int *h, int *up, int *right, int *
                 *right = 1;
                 break;
             case SDL_SCANCODE_SPACE:
-                if(*menu==3){
                     checkCircle(pos, shapes, rands, shapeNbr);
                     putCircle(pos, shapes, rands, shapeNbr, tab);
-                }
                 break;
             }
         }
