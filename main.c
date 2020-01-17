@@ -109,45 +109,7 @@ int main(int argc, char *argv[])
         shapes[i-1].h = 100;
     }
 
-    //******************* Menus *********************//
-
-    SDL_Surface* menu0 = IMG_Load("menu0.png");
-    if(!menu0){
-        printf("Error  Surface!!\n");
-        SDL_DestroyRenderer(rend);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
-    }
-
-    SDL_Texture * texMenu0 = SDL_CreateTextureFromSurface(rend, menu0);
-    SDL_FreeSurface(menu0);
-    if(!texMenu0){
-        printf("Error  Texture!!\n");
-        SDL_DestroyRenderer(rend);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
-    } 
-
-    SDL_Surface* menu1 = IMG_Load("menu1.png");
-    if(!menu1){
-        printf("Error  Surface!!\n");
-        SDL_DestroyRenderer(rend);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
-    }
-
-    SDL_Texture * texMenu1 = SDL_CreateTextureFromSurface(rend, menu1);
-    SDL_FreeSurface(menu1);
-    if(!texMenu1){
-        printf("Error  Texture!!\n");
-        SDL_DestroyRenderer(rend);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
-    } 
+    
 
     
     int w, h;
@@ -192,47 +154,9 @@ int main(int argc, char *argv[])
     int shapeNbr = -1;
     int shapes_zone2[6]={0,0,0,0,0,0};
 
-    int menu = 0;
 
     while(1){
-        if(menu==0){
-            // First menu
-            int ev = handleEvents(window, &w, &h, &up, &right, &down, &left, &pos, shapes, rands, &shapeNbr, shapes_zone2, &menu, shapes_zone2);
-            if(ev==1) break;
-
-            SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-            SDL_RenderClear(rend);
-            SDL_RenderCopyEx(rend, texMenu0  , NULL, &allWindow, 0, NULL, SDL_FLIP_NONE);
-            SDL_RenderPresent(rend);
-
-            
-            SDL_Delay(delTime);
-
-        }else if(menu==1){
-            int ev = handleEvents(window, &w, &h, &up, &right, &down, &left, &pos, shapes, rands, &shapeNbr, shapes_zone2, &menu, shapes_zone2);
-            if(ev==1) break;
-
-            SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-            SDL_RenderClear(rend);
-            SDL_RenderCopyEx(rend, texMenu1  , NULL, &allWindow, 0, NULL, SDL_FLIP_NONE);
-            SDL_RenderPresent(rend);
-
-            
-            SDL_Delay(delTime);
-
-        }else if(menu==2){
-            int ev = handleEvents(window, &w, &h, &up, &right, &down, &left, &pos, shapes, rands, &shapeNbr, shapes_zone2, &menu, shapes_zone2);
-            
-            SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-            SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-            SDL_RenderClear(rend);
-            SDL_RenderCopyEx(rend, texMenu0  , NULL, &allWindow, 0, NULL, SDL_FLIP_NONE);
-            SDL_RenderPresent(rend);
-
-            
-            SDL_Delay(delTime);
-
-        }else{
+        
             int ev = handleEvents(window, &w, &h, &up, &right, &down, &left, &pos, shapes, rands, &shapeNbr, shapes_zone2, &menu, shapes_zone2);
             if(ev==1) break;
 
@@ -291,7 +215,7 @@ int main(int argc, char *argv[])
             }
 
             SDL_Delay(delTime);
-        }
+        
     }
 
     SDL_DestroyTexture(tex);
