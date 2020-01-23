@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
     SDL_Surface* circle = IMG_Load("circle.png");
     if(!circle){
-        printf("Error  Surface!!\n");
+        printf("Error  Surface Circle!!\n");
         SDL_DestroyRenderer(rend);
         SDL_DestroyWindow(window);
         SDL_Quit();
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
     SDL_Surface* rect = IMG_Load("rect.png");
     if(!rect){
-        printf("Error  Surface!!\n");
+        printf("Error  Surface RECT!!\n");
         SDL_DestroyRenderer(rend);
         SDL_DestroyWindow(window);
         SDL_Quit();
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 
     SDL_Surface* shape = IMG_Load("triangle.png");
     if(!shape){
-        printf("Error  Surface!!\n");
+        printf("Error  Surface Triangle!!\n");
         SDL_DestroyRenderer(rend);
         SDL_DestroyWindow(window);
         SDL_Quit();
@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
 
     while(1){
         
-            int ev = handleEvents(window, &w, &h, &up, &right, &down, &left, &pos, shapes, rands, &shapeNbr, shapes_zone2, &menu, shapes_zone2);
+            int ev = handleEvents(window, &w, &h, &up, &right, &down, &left, &pos, shapes, rands, &shapeNbr, shapes_zone2, shapes_zone2);
             if(ev==1) break;
 
 
