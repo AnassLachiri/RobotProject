@@ -1,6 +1,3 @@
-#OBJS specifies which files to compile as part of the project
-OBJS = main.c
-
 #CC specifies which compiler we're using
 CC = gcc
 
@@ -15,15 +12,19 @@ LINKER_FLAGS = -lSDL2
 OBJ_NAME = main
 
 #This is the target that compiles our executable
-all : functions.o main.o
-	$(CC) main.o functions.o $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
+all : functions.o main.o trace.o
+	$(CC) main.o functions.o trace.o $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
 
 
 functions.o: functions.c
 	$(CC) -c functions.c $(COMPILER_FLAGS) $(LINKER_FLAGS)
 
 
-main.o: main.c functions.h
+trace.o: trace.c
+	$(CC) -c trace.c $(COMPILER_FLAGS) $(LINKER_FLAGS)
+
+
+main.o: main.c functions.h trace.h
 	$(CC) -c main.c $(COMPILER_FLAGS) $(LINKER_FLAGS)
 
 clear:
